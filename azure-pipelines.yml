@@ -15,10 +15,18 @@ steps:
   - script: dotnet build --configuration Release
     displayName: 'Build the games'
 
-  - task: AzureRmWebAppDeployment@4
+  - task: ArchiveFiles@2
     inputs:
-      ConnectionType: 'AzureRM'
-      azureSubscription: '1a6852f1-f26f-481f-9197-70499d5d8bbb'
-      appType: 'webApp'
-      WebAppName: 'webappnetsite'
-      packageForLinux: '$(Build.ArtifactStagingDirectory)/**/*.zip'
+      rootFolderOrFile: '$(Build.BinariesDirectory)'
+      includeRootFolder: false
+      archiveType: 'zip'
+      archiveFile: '$(Build.ArtifactStagingDirectory)/games.zip'
+      replaceExistingArchive: true
+    displayName: 'Archive the games'
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(Build.ArtifactStagingDirectory)/games.zip'
+      ArtifactName: 'games'
+      publishLocation: 'Container'
+    displayName: 'Publish artifacts'
