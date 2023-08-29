@@ -9,7 +9,7 @@ pool:
 steps:
   - task: UseDotNet@2
     inputs:
-      version: '6.x'
+      version: '7.x'
       includePreviewVersions: true
 
   - script: dotnet build --configuration Release
